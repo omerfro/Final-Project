@@ -39,15 +39,9 @@ body {
   background-color: gray;
 }
 
-.cell[disabled]{
-  pointer-events: none;
-  opacity: 0.7;
-}
-
-
-
 .miss{
-  background-color: aqua;
+  background-color: blue;
+  pointer-events: none;
 }
 
 .cell:hover:not(.miss,.hit){
@@ -55,13 +49,11 @@ body {
 }
 
 .ship-cell{
-  /* border: 1px solid black; */
   line-height: 34px;
   padding: 0;
   text-align: center;
   width: 25px;
    height: 25px;
-  /* background-color: burlywood; */
 }
 
 
@@ -71,12 +63,27 @@ body {
   margin: 10px;
   border: 1px solid black;
   border-radius: 30%;
-  background-color: burlywood;
+  background-color: rgb(149, 245, 248);
 }
 
+.ship:hover:not(.dead,.alive){
+  transform: scale(1.5); 
+  background-color: rgb(105, 248, 217);
+}
+
+.selected {
+  transform: scale(1.5); 
+  background-color: rgb(105, 248, 217);
+}
+
+.alive{
+  background-color: burlywood;
+  pointer-events: none;
+}
 
 .hit, .dead{
   background-color: red;
+  pointer-events: none;
 }
 
 .legend-container {
@@ -84,6 +91,7 @@ body {
   grid-template-columns: 7rem 7rem 7rem;
   margin: 50px;
   justify-items: center;
-  width: min-content;
 }
+
+
 

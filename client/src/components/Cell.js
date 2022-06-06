@@ -2,23 +2,46 @@ import React from "react";
 
 function Cell(props){
 
-    const [isActive,setActive] = React.useState(false)
-    const [hit,setHit] = React.useState(false)
+    const [status,setStatus] = React.useState(props.status)
 
     const tryHit = () => {
-        if(!isActive){
-            const num = Math.random();
+        const num = Math.random();
             if(num > 0.5){
-                setHit(true)
+                setStatus(2)
+            } else {
+                setStatus(3)
             }
-            setActive(true)
-            }
+    }
+
+    function checkCell(){
+        switch(status){
+            case 0:
+                return 'cell'
+            case 1:
+                return 'cell alive'
+            case 2:
+                return 'cell hit'
+            case 3:
+                return 'cell miss'
+            default:
+                return 'cell'
+        }
     }
 
 
     return <>
-        <div key={props.cellKey} className={!isActive ? 'cell' : (hit ? 'cell hit' : 'cell miss') } onClick={tryHit}></div>
+        <div className={checkCell()} onClick={tryHit}></div>
     </>
 }
 
 export default Cell;
+
+
+/*/
+    status: 
+        0 = initial state
+        1 = alive ship 
+        2 = hit ship
+        3 = miss
+
+/*/

@@ -5,19 +5,17 @@ import '../App.css';
 
 function Board(props){
 
-    let rows = [];
-    for(let y=0; y<10; y++) {
-        const cells = [];
-        for(let x=0; x<10; x++) {
-            cells.push(<Cell cellKey={`${x}${y}`}/>)
-        }
-        rows.push(<div key={`col-${y}`}>{cells}</div>)
-    }
-
     return <>
-        <div> 
-            <div className={`board-container ${props.status}`} >{rows}</div>
-            <Legend />
+        <div className={`${props.owner} ${props.status}`}> 
+            <div className={`board-container `} >
+                {
+                    props.board_array.map(row => 
+                        <div> {row.map(cell => 
+                            <Cell status={cell}> {cell} </Cell>)} 
+                        </div>) 
+                }
+            </div>
+            <Legend dispatcher={props.dispatcher}/>
         </div>
     </>
 }

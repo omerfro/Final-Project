@@ -1,4 +1,5 @@
 # Battleships!
+
 ### The goal of the project is to build a two-player battleship game.
 - The first player, the host, is opening the app and starting the game.
     - After the game is created the host can send the game id to the guest.
