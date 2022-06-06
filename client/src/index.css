@@ -7,7 +7,83 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+.game{
+  display: flex;
 }
+
+.board-container {
+  display: grid;
+  grid-template-columns: repeat(10, 50px);
+  border: 1px solid;
+  width: max-content;
+  margin: 50px;
+}
+
+.disabled {
+  opacity: 0.2;
+  pointer-events: none;
+}
+
+.enabled {
+  pointer-events: auto;
+}
+
+.cell {
+  background: transparent;
+  border: 1px solid black;
+  line-height: 34px;
+  padding: 0;
+  text-align: center;
+  width: 50px;
+   height: 50px;
+  background-color: gray;
+}
+
+.cell[disabled]{
+  pointer-events: none;
+  opacity: 0.7;
+}
+
+
+
+.miss{
+  background-color: aqua;
+}
+
+.cell:hover:not(.miss,.hit){
+  background-color: aliceblue;
+}
+
+.ship-cell{
+  /* border: 1px solid black; */
+  line-height: 34px;
+  padding: 0;
+  text-align: center;
+  width: 25px;
+   height: 25px;
+  /* background-color: burlywood; */
+}
+
+
+.ship {
+  display: flex;
+  flex-direction: row;
+  margin: 10px;
+  border: 1px solid black;
+  border-radius: 30%;
+  background-color: burlywood;
+}
+
+
+.hit, .dead{
+  background-color: red;
+}
+
+.legend-container {
+  display: grid;
+  grid-template-columns: 7rem 7rem 7rem;
+  margin: 50px;
+  justify-items: center;
+  width: min-content;
+}
+
