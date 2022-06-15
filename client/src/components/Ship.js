@@ -1,15 +1,22 @@
 import React from "react";
 import '../App.css';
+import {ValueContext} from './BoardContext'
 
 function Ship(props) {
+
+    const value = React.useContext(ValueContext);
 
     const [status,setStatus] = React.useState('')
 
     const placeShip = () => {
-        if(status === ''){
+        if(!value.currentShip){
             setStatus('selected')
+            value.currentShip = props.length
+        }else {
+            setStatus('')
+            value.currentShip = null
         }
-
+        
     }
 
     const ship = [];

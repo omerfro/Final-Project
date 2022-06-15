@@ -44,7 +44,12 @@ body {
   pointer-events: none;
 }
 
-.cell:hover:not(.miss,.hit){
+.available{
+  background-color: burlywood;
+  opacity: 30%;
+}
+
+.cell:hover:not(.miss,.hit,.available){
   background-color: aliceblue;
 }
 
@@ -84,6 +89,10 @@ body {
 .hit, .dead{
   background-color: red;
   pointer-events: none;
+}
+
+.potential{
+  background-color: rgb(246, 250, 19)
 }
 
 .legend-container {
