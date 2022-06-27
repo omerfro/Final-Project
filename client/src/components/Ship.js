@@ -9,13 +9,17 @@ function Ship(props) {
     const [status,setStatus] = React.useState('')
 
     const placeShip = () => {
-        if(!value.currentShip){
-            setStatus('selected')
-            value.currentShip = props.length
-        }else {
-            setStatus('')
-            value.currentShip = null
-        }
+        if(props.owner === 'user'){
+            if(!value.currentShip.id){
+                setStatus('selected')
+                value.currentShip.length = props.length
+                value.currentShip.id = props.id
+            }else {
+                setStatus('')
+                value.currentShip.id = null
+                value.currentShip.length = null
+            }
+        }    
         
     }
 
@@ -24,7 +28,7 @@ function Ship(props) {
         ship.push(<div className={`ship-cell `}></div>)
     }
 
-    return <div className={`ship ${status}`} onClick={placeShip}> { ship } </div>
+    return <div id={props.id} className={`ship ${status}`} onClick={placeShip}> { ship } </div>
 }
 
 export default Ship

@@ -8,6 +8,11 @@ function Board(props){
 
     const value = React.useContext(ValueContext);
 
+    function board_array(){
+        if(props.owner === 'user') return value.my_array
+        else return value.opponent_array
+    }
+
     function setCurrentCell() {
         if(value.currentCell){
             value.currentCell = null
@@ -29,13 +34,13 @@ function Board(props){
         <div className={`${props.owner} ${props.status}`} > 
             <div className={`board-container `} onMouseLeave={setCurrentCell}>
                 {
-                    props.board_array.map((col,colnum) => 
+                    board_array().map((col,colnum) => 
                         <div> {col.map((cell, rownum) => 
-                            <Cell row={rownum} column={colnum} id={`${rownum}${colnum}`} status={cell}> {cell} </Cell>)} 
+                            <Cell row={rownum} column={colnum} id={`${rownum}${colnum}`} status={cell} start={props.start} owner={props.owner}> {cell} </Cell>)} 
                         </div>) 
                 }
             </div>
-            <Legend dispatcher={props.dispatcher}/>
+            <Legend owner={props.owner}/>
         </div>
     </>
 }

@@ -49,6 +49,8 @@ body {
   opacity: 30%;
 }
 
+
+
 .cell:hover:not(.miss,.hit,.available){
   background-color: aliceblue;
 }
@@ -102,5 +104,8 @@ body {
   justify-items: center;
 }
 
-
+.unavailable{
+  background-color: rgb(252, 104, 124);
+  opacity: 30%;
+}
 
