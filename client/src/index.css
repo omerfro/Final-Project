@@ -83,15 +83,15 @@ body {
   background-color: rgb(105, 248, 217);
 }
 
+.hit, .dead{
+  background-color: red;
+  pointer-events: none;
+}
 .alive{
   background-color: burlywood;
   pointer-events: none;
 }
 
-.hit, .dead{
-  background-color: red;
-  pointer-events: none;
-}
 
 .potential{
   background-color: rgb(246, 250, 19)

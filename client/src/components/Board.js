@@ -2,41 +2,46 @@ import React from "react";
 import Cell from "./Cell";
 import Legend from "./Legend";
 import '../App.css';
-import { ValueContext } from "./BoardContext";
+import { ValueContext } from "./context";
 
 function Board(props){
 
-    const value = React.useContext(ValueContext);
+    const { state, dispatch } = React.useContext(ValueContext);
 
     function board_array(){
-        if(props.owner === 'user') return value.my_array
-        else return value.opponent_array
+        if(props.owner === 'user') return state.my_array
+        else return state.opponent_array
     }
 
     function setCurrentCell() {
-        if(value.currentCell){
-            value.currentCell = null
+        if(state.currentCell){
+            //value.currentCell = null
+            //value.placeShip.flag = false
+            let temp_ship = state.placeShip
+            temp_ship.flag = false
+            dispatch({type: 'mouse_leave_board', payload: {cell: {position: null, row: null, column: null}, ship: temp_ship} })
             clearAvaialbleCells()
-            value.placeShip.flag = false
+            dispatch({type: 'available_cells',payload: []})
         }
         
     }
 
     function clearAvaialbleCells(){
-        value.availableCells.forEach(cell => {
+        state.availableCells.forEach(cell => {
             document.getElementById(cell)?.classList.remove("available")
         })
 
-        value.availableCells = []
+        //value.availableCells = []
+        //dispatcher.dispatch({type: 'available_cells', payload: null}) // see function above
     }
 
     return <>
-        <div className={`${props.owner} ${props.status}`} > 
+        <div id={`${props.owner}-board`} className={`${props.owner} ${props.status}`} > 
             <div className={`board-container `} onMouseLeave={setCurrentCell}>
                 {
                     board_array().map((col,colnum) => 
-                        <div> {col.map((cell, rownum) => 
-                            <Cell row={rownum} column={colnum} id={`${rownum}${colnum}`} status={cell} start={props.start} owner={props.owner}> {cell} </Cell>)} 
+                        <div key={`${colnum}`}> {col.map((cell, rownum) => 
+                            <Cell key={`${rownum}${colnum}`} row={rownum} column={colnum} id={`${rownum}${colnum}`} owner={props.owner} > {cell} </Cell>)} 
                         </div>) 
                 }
             </div>
