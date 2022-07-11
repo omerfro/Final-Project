@@ -21,65 +21,63 @@ const io = new Server(httpServer,{
     }
 })
 
-
 const state = {
     rooms: [
         
-    ]
+    ],
+    counter: 0
 }
 
 io.on('connection', (socket) => {
     console.log('a user connected, id:',socket.id)
-    socket.request.session = 'session1'
-    console.log(socket.request.session)
-    //console.log('session :', socket.request.session)
-    if (!state.rooms[state.rooms.length]){
-        if(state.rooms.length === 0){
-            createRoom(socket)
-            socket.join('room1')
-            console.log(io.sockets.adapter.rooms)
-        } else if (state.rooms[state.rooms.length - 1].player2.id === ''){
-            state.rooms[state.rooms.length - 1].player2.id = socket.id
-            console.log('rooms',state.rooms)
-        }
-        else {
-            createRoom(socket)
-        }
-        //state.rooms[state.rooms.length].player2.id = socket.id
-        
-    } else {
+    socket.request.session = `roomsession-${state.counter}`
+
+    if(!state.rooms[socket.request.session]){
         createRoom(socket)
+        socket.join(socket.request.session)
+        io.in(socket.request.session).emit('add-player', 1)
+    } else {
+        if(state.rooms[socket.request.session].players.length === 1){
+            socket.join(socket.request.session)
+            const player = {name:'', id: socket.id}
+            state.rooms[socket.request.session].players.push(player)
+            state.counter++
+            io.in(socket.request.session).emit('add-player', 2)
+        } else {
+            createRoom(socket)
+            socket.join(socket.request.session)
+            io.in(socket.request.session).emit('add-player', 1)
+        }
     }
 
     socket.on('start', (data)=> {
         socket.broadcast.emit('start',data)
-        if(state.rooms[0].player_turn === 0){
+        if(state.rooms[socket.request.session].player_turn === 0){
             let player = socket.id
             io.to(player).emit('change-turn')
-            state.rooms[0].player_turn = 1
+            state.rooms[socket.request.session].player_turn = 1
         }
     })
 
     socket.on('hit', (data) => {
         if(!data.hits_array[data.hits_array.length - 1]){
-            state.rooms[0].player_turn === 1 ? state.rooms[0].player_turn = 2 : state.rooms[0].player_turn = 1
-            io.emit('change-turn')
+            state.rooms[socket.request.session].player_turn === 1 ? state.rooms[socket.request.session].player_turn = 2 : state.rooms[socket.request.session].player_turn = 1
+            io.in(socket.request.session).emit('change-turn')
         }   
-        socket.broadcast.emit('hit', data)
+        socket.to(socket.request.session).emit('hit', data)
         
     })
 
     socket.on('end', (data) => {
         io.to(socket.id).emit('game-end','victory')
-        socket.broadcast.emit('game-end','lose')
+        socket.to(socket.request.session).emit('game-end','lose')
     })
-}); 
+});     
 
 function createRoom(socket){
-    //const length = state.rooms.length
-    const game = {player_turn:0, player1:{name:'', id: socket.id}, player2: {name: '',id: ''}   }
-    state.rooms.push(game)
-}
+    const room = {players: [{name:'', id: socket.id}], player_turn: 0 }
+    state.rooms[socket.request.session] = room
+}   
 
 // app.get('/', (req,res) => {
 //     res.status(200).send('HELLO')

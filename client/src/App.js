@@ -19,7 +19,7 @@ function App() {
     if(!appRendered.current){
       socket.on("connect", () => {
         console.log('connected!! id:',socket.id)
-        
+        dispatch({type: 'player_connect', payload: 1})
       })
       socket.on('start', (data) => {
         dispatch({type:'initiate_opponent_data',payload:{opponent_board: data.my_array, opponent_ships: data.ships}})
@@ -34,6 +34,9 @@ function App() {
       })
       socket.on('game-end', (data) => {
         console.log(data === 'victory' ? `this is a ${data}` : `you ${data}`)
+      })
+      socket.on('add-player', (data) =>{
+        dispatch({type: 'player_connect', payload: data})
       })
       
       appRendered.current = true
@@ -55,9 +58,32 @@ function App() {
     }
   },[state.hits_array.length])
 
+  function waitingTitle(){
+    if(!state.game_start){
+      switch(state.players){
+        case 1:
+          return 'Searching for a battle...'
+        case 2:
+          return 'Preparing...'
+        default:
+          return ''
+      }
+    } else {
+      return ''
+    }
+    
+  }
+
   return (
     <div className="App">
+      <span class='title'>BATTLESHIPS
+
+      </span>
+      
         <div className='game'>
+        <div className="waiting">{waitingTitle()}
+ 
+        </div>
           <Board status="enabled" owner="user" />
           <Board status="disabled" owner="opponent" />
         </div>

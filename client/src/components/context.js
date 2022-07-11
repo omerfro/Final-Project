@@ -90,6 +90,11 @@ function reducer(state, action){
         ...state,
         my_turn: !(state.my_turn)
       }
+    case 'player_connect':
+      return {
+        ...state,
+        players: action.payload
+      }
     default:
       return state;
   }
@@ -144,6 +149,7 @@ const boards = {
       [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
       [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
       [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-    ]
+    ],
+    players: 0
   }
 

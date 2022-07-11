@@ -6,7 +6,6 @@ function Cell(props){
 
     const { state, dispatch } = React.useContext(ValueContext);
 
-    // const [status,setStatus] = React.useState(props.status)
     const [ship,setShip] = React.useState(null)
 
 
@@ -17,13 +16,11 @@ function Cell(props){
             let temp_board = state.opponent_array
             let opponent_ships_temp = state.opponent_ships
             if(state.opponent_array[props.row][props.column] === 1){
-                //setStatus(2)
                 temp_board = state.opponent_array
                 temp_board[props.row][props.column] = 2
-                //dispatch({type:'change_opponent_array',payload: temp_board })
-                //value.opponent_array[props.row][props.column] = 2
                 let shipIndex = getShipByPositionId(props.row,props.column)
-                opponent_ships_temp[shipIndex].hits++ //add legend owner to id
+
+                opponent_ships_temp[shipIndex].hits++ 
                 if(opponent_ships_temp[shipIndex].hits == opponent_ships_temp[shipIndex].length){
                     document.getElementById(`${opponent_ships_temp[shipIndex].id}-opponent`).classList.add('hit')
                 }
@@ -43,14 +40,19 @@ function Cell(props){
     //replace forEach VVVVV
 
     function getShipByPositionId(row,column){
-        const position = parseInt(`${row}${column}`)
+        const position = (`${row}${column}`)
         let x = null
-        console.log('positions to check:', position)
         for(let ship of state.opponent_ships){
-            if(ship.positions.includes(position)){
-                x = state.opponent_ships.indexOf(ship) 
-                break
-            } 
+            for(let pos of ship.positions){
+                if(position == pos){
+                    x = state.opponent_ships.indexOf(ship) 
+                    break
+                }
+            }
+            // if(ship.positions.includes(position)){
+            //     x = state.opponent_ships.indexOf(ship) 
+            //     break
+            // } 
         }
         return x
     }

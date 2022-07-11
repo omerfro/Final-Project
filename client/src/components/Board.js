@@ -45,8 +45,10 @@ function Board(props){
                         </div>) 
                 }
             </div>
+            
             <Legend owner={props.owner}/>
         </div>
+        
     </>
 }
 
